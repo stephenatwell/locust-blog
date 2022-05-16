@@ -1,0 +1,38 @@
+version: v1
+kind: kubernetes
+application: sample-application
+# Map of Deployment Targets, this is set up in a way where 
+# we can do multi-target deployments (multi-region or multi-cluster)
+targets:
+  # This in the name of a deployment, underneath it are its configuration
+  staging:
+    # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
+    account: my-first-cluster
+
+    namespace: armory-sample-application
+    # This is the key to a strategy under the strategies map
+    strategy: mycanary
+
+# The list of manifests sources
+manifests:
+  # This will read all yaml|yml files in a dir and deploy all manifests in that directory to all targets.
+  - path: manifests/
+    targets: [staging]
+# The map of strategies, a deployment target will reference one of these
+strategies:
+  # this is the name for the strategy
+  mycanary:
+    # This map key, is the deployment strategy type
+    canary: 
+        # List of canary steps
+        steps:
+          # The map key is the step type
+          - setWeight:
+              weight: 25
+          - pause:
+              untilApproved: true
+          - setWeight:
+              weight: 50
+          - setWeight:
+              weight: 100
+
