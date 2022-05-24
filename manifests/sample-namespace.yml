@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: armory-demo-application
+  name: armory-sample-application

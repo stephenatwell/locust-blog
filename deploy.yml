@@ -5,19 +5,29 @@ application: sample-application
 # we can do multi-target deployments (multi-region or multi-cluster)
 targets:
   # This in the name of a deployment, underneath it are its configuration
-  my-first-cluster:
+  my-first-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
     account: my-first-cluster
-
     namespace: armory-sample-application
     # This is the key to a strategy under the strategies map
     strategy: mycanary
 
+  my-second-environment:
+    # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
+    account: my-first-cluster
+    namespace: armory-demo-application
+    # This is the key to a strategy under the strategies map
+    strategy: mycanary
+    constraints:
+      dependsOn: [my-first-environment]
 # The list of manifests sources
 manifests:
   # This will read all yaml|yml files in a dir and deploy all manifests in that directory to all targets.
-  - path: /manifests/
-    targets: [my-first-cluster]
+  - path: manifests/sample-namespace.yml
+    targets: [my-first-environment]
+  - path: manifests/demo-namespace.yml
+    targets: [my-second-environment]
+  - path: manifests/demo-app.yml
 # The map of strategies, a deployment target will reference one of these
 strategies:
   # this is the name for the strategy
