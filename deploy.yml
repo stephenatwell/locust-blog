@@ -1,42 +1,41 @@
 version: v1
 kind: kubernetes
 application: sample-application
-# Map of Deployment Targets, this is set up in a way where 
-# we can do multi-target deployments (multi-region or multi-cluster)
+# Map of Application Targets to which we are deploying
 targets:
-  # This in the name of a deployment, underneath it are its configuration
-  my-first-environment:
+  # This in the name of an application target, underneath it are its configuration
+  my-first-canary-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
     account: my-first-cluster
     namespace: armory-sample-application
-    # This is the key to a strategy under the strategies map
+    # This is the name of the strategy to use when deploying.
     strategy: mycanary
 
-  my-second-environment:
+  my-first-bluegreen-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
     account: my-first-cluster
     namespace: armory-demo-application
-    # This is the key to a strategy under the strategies map
+    # This is the name of the strategy to use when deploying.
     strategy: mycanary
     constraints:
-      dependsOn: [my-first-environment]
-# The list of manifests sources
+      dependsOn: [my-first-canary-environment]
+# The list of manifests to deploy
 manifests:
-  # This will read all yaml|yml files in a dir and deploy all manifests in that directory to all targets.
+  # This will read all yaml|yml files in a dir and deploy all manifests in that directory to all targets, or their specified target.
   - path: manifests/sample-namespace.yml
-    targets: [my-first-environment]
+    targets: [my-first-canary-environment]
   - path: manifests/demo-namespace.yml
-    targets: [my-second-environment]
+    targets: [my-first-bluegreen-environment]
   - path: manifests/demo-app.yml
 # The map of strategies, a deployment target will reference one of these
 strategies:
   # this is the name for the strategy
   mycanary:
-    # This map key, is the deployment strategy type
+    # This specifies the strategy type
     canary: 
         # List of canary steps
         steps:
-          # The map key is the step type
+          # there are multiple step types. setWeight changes what percentage of traffic reaches the new version.
           - setWeight:
               weight: 25
           - pause:
@@ -45,4 +44,15 @@ strategies:
               weight: 50
           - setWeight:
               weight: 100
-
+  mybluegreen:
+    # This specifies the deployment strategy type
+    blueGreen:
+      # List of what needs to happen before redirecting traffic
+      redirectTrafficAfter:
+        - pause:
+            duration: 10
+            unit: seconds
+      # List of what needs to happen before shutting down the old version
+      shutDownOldVersionAfter:
+        - pause:
+            untilApproved: true
