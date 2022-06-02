@@ -6,14 +6,14 @@ targets:
   # This in the name of an application target, underneath it are its configuration
   my-first-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: dev-demo-prod
+    account: my-first-cluster
     namespace: armory-sample-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
 
   my-second-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: dev-demo-prod
+    account: my-first-cluster
     namespace: armory-demo-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
