@@ -1,5 +1,5 @@
-#cdCon-cdaas-demo
-Get started with using CDaaS by deploying a sample application to your cluster.
+#cdCon-CD-as-a-Service-demo
+Get started with using CD-as-a-Service by deploying a sample application to your cluster.
 
 ## Without Using Github CLI
 1. Setup RNA using the docs here https://docs.armory.io/cd-as-a-service/setup/get-started/#prepare-your-deployment-target

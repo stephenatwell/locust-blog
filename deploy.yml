@@ -4,16 +4,16 @@ application: sample-application
 # Map of Application Targets to which we are deploying
 targets:
   # This in the name of an application target, underneath it are its configuration
-  my-first-canary-environment:
+  my-first-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: my-first-cluster
+    account: dev-demo-prod
     namespace: armory-sample-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
 
-  my-first-bluegreen-environment:
+  my-second-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: my-first-cluster
+    account: dev-demo-prod
     namespace: armory-demo-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
@@ -47,6 +47,7 @@ strategies:
   mybluegreen:
     # This specifies the deployment strategy type
     blueGreen:
+      activeService: sample-app-svc
       # List of what needs to happen before redirecting traffic
       redirectTrafficAfter:
         - pause:
