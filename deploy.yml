@@ -56,8 +56,8 @@ strategies:
           # there are multiple step types. setWeight changes what percentage of traffic reaches the new version.
           - setWeight:
               weight: 25
-          - pause:
-              untilApproved: true
+          #- pause:
+          #    untilApproved: true
           - setWeight:
               weight: 50
           - setWeight:
