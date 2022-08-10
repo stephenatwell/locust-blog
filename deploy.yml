@@ -42,6 +42,11 @@ manifests:
 # The map of strategies, a deployment target will reference one of these
 strategies:
   # this is the name for the strategy
+  rolling:
+    canary:
+      steps:
+      - setWeight:
+          weight: 100
   mycanary:
     # This specifies the strategy type
     canary: 
