@@ -10,6 +10,16 @@ targets:
     namespace: armory-sample-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
+  perf:
+    account: demo-staging-cluster
+    namespace: borealis-perftest
+    # just deploy with a rolling update, its staging.
+    strategy: rolling
+    constraints:
+      dependsOn: ["dev"]
+      afterDeployment:
+      - pause:
+          untilApproved: true
 
   my-second-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
@@ -18,15 +28,17 @@ targets:
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
     constraints:
-      dependsOn: [my-first-environment]
+      dependsOn: [my-first-environment,perf]
 # The list of manifests to deploy
 manifests:
   # This will read all yaml|yml files in a dir and deploy all manifests in that directory to all targets, or their specified target.
   - path: manifests/sample-namespace.yml
     targets: [my-first-environment]
   - path: manifests/demo-namespace.yml
-    targets: [my-second-environment]
+    targets: [my-second-environment,perf]
   - path: manifests/demo-app.yml
+  - path: thirdparty/locust/generatedManifest.yml
+    targets: [perf]
 # The map of strategies, a deployment target will reference one of these
 strategies:
   # this is the name for the strategy
