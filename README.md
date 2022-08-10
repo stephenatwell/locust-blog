@@ -1,4 +1,4 @@
-#Sample demo of using Locust.io with Armory CD-as-a-Service
+# Sample demo of using Locust.io with Armory CD-as-a-Service
 This sample demonstrates how to use Locust.io from within Armory cd-as-a-service.
 
 ## Requirements
