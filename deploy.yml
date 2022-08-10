@@ -38,7 +38,7 @@ manifests:
   - path: manifests/demo-namespace.yml
     targets: [borealis-perftest]
   - path: manifests/demo-app.yml
-  - path: thirdparty/locust/generatedManifest.yml
+  - path: thirdParty/locust/generatedManifest.yml
     targets: [perf]
 # The map of strategies, a deployment target will reference one of these
 strategies:
