@@ -6,7 +6,7 @@ targets:
   # This in the name of an application target, underneath it are its configuration
   my-first-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: my-first-cluster
+    account: demo-staging-cluster
     namespace: armory-sample-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
@@ -16,14 +16,13 @@ targets:
     # just deploy with a rolling update, its staging.
     strategy: rolling
     constraints:
-      dependsOn: ["dev"]
       afterDeployment:
       - pause:
           untilApproved: true
 
   my-second-environment:
     # the name of an agent configured account. Agent Name can be found at https://console.cloud.armory.io/configuration > Agents
-    account: my-first-cluster
+    account: demo-staging-cluster
     namespace: armory-demo-application
     # This is the name of the strategy to use when deploying.
     strategy: mycanary
@@ -35,7 +34,9 @@ manifests:
   - path: manifests/sample-namespace.yml
     targets: [my-first-environment]
   - path: manifests/demo-namespace.yml
-    targets: [my-second-environment,perf]
+    targets: [my-second-environment]
+  - path: manifests/demo-namespace.yml
+    targets: [borealis-perftest]
   - path: manifests/demo-app.yml
   - path: thirdparty/locust/generatedManifest.yml
     targets: [perf]
